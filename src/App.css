@@ -715,17 +715,82 @@
   font-weight: 400;
 }
 
-/* Hide side columns on tablet/mobile views for balanced styling */
+/* Responsive adjustments for side columns on tablet/mobile viewports */
 @media (max-width: 1300px) {
   .page-layout {
     flex-direction: column;
     align-items: center;
-    padding: 0;
-    gap: 20px;
+    padding: 20px 12px;
+    gap: 16px;
   }
 
   .side-column {
-    display: none;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 680px;
+    gap: 16px;
+    position: static;
+    margin-top: 0 !important;
+  }
+
+  .left-side {
+    order: 1;
+  }
+
+  .right-side {
+    order: 2;
+  }
+
+  .form-card {
+    order: 3;
+    width: 100%;
+    max-width: 680px;
+  }
+
+  .activity-card {
+    flex: 1;
+    min-width: 0;
+    border-radius: 12px;
+  }
+
+  .activity-image-wrapper {
+    height: 130px;
+  }
+
+  .activity-overlay {
+    padding: 16px 12px 12px;
+  }
+
+  .activity-title {
+    font-size: 13px;
+  }
+
+  .activity-subtitle {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-layout {
+    gap: 12px;
+    padding: 16px 8px;
+  }
+
+  .side-column {
+    gap: 10px;
+  }
+
+  .activity-image-wrapper {
+    height: 90px;
+  }
+
+  .activity-title {
+    font-size: 11.5px;
+  }
+
+  .activity-subtitle {
+    font-size: 9px;
   }
 }
 
