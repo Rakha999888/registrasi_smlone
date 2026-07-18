@@ -357,22 +357,15 @@ function App() {
     }
   };
 
-  // Generate student card activation code & barcode text
-  const getActivationCode = () => {
-    const formattedDob = dob ? dob.replace(/-/g, '') : '20000101';
+  // Generate student card referral code
+  const getReferralCode = () => {
+    const firstName = fullName ? fullName.trim().split(' ')[0].toUpperCase().replace(/[^A-Z]/g, '') : 'STUDENT';
     const lastFourPhone = contact ? contact.trim().slice(-4) : '0000';
-    return `SML-${formattedDob}-${lastFourPhone}`;
-  };
-
-  const getBarcodeValue = () => {
-    const formattedDob = dob ? dob.replace(/-/g, '') : '20000101';
-    const lastFourPhone = contact ? contact.trim().slice(-4) : '0000';
-    return `SML${formattedDob}${lastFourPhone}`;
+    return `REF-${firstName}-${lastFourPhone}`;
   };
 
   const generateCardHTML = (isForPrinting = false) => {
-    const activationCode = getActivationCode();
-    const barcodeVal = getBarcodeValue();
+    const referralCode = getReferralCode();
     const logoUrl = window.location.origin + smloneLogo;
     
     return `<!doctype html>
@@ -381,7 +374,7 @@ function App() {
   <meta charset="utf-8">
   <title>Kartu Registrasi SMLONE - ${fullName}</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Barcode+39&family=Outfit:wght@600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap');
     
     body {
       font-family: 'Inter', sans-serif;
@@ -469,33 +462,25 @@ function App() {
       color: #0f1c16;
       font-weight: 700;
     }
-    .barcode-section {
+    .referral-section {
       background: #f8faf9;
-      border: 1.5px solid #d1dbd6;
+      border: 2px dashed #0f5132;
       border-radius: 12px;
-      padding: 16px;
+      padding: 20px;
       text-align: center;
       margin-bottom: 20px;
     }
-    .barcode-font {
-      font-family: 'Libre Barcode 39', cursive;
-      font-size: 64px;
-      line-height: 1;
-      margin: 8px 0;
-      color: #000000;
-      display: block;
-      user-select: none;
-    }
-    .activation-code {
-      font-family: monospace;
-      font-size: 14px;
-      font-weight: 700;
+    .referral-code-text {
+      font-family: 'Outfit', monospace;
+      font-size: 26px;
+      font-weight: 800;
       color: #b45309;
       background: rgba(180, 83, 9, 0.08);
-      padding: 4px 10px;
-      border-radius: 6px;
+      padding: 8px 20px;
+      border-radius: 8px;
       display: inline-block;
       letter-spacing: 1px;
+      border: 1.5px dashed #b45309;
     }
     .instructions-section {
       background: rgba(15, 81, 50, 0.03);
@@ -607,10 +592,10 @@ function App() {
         </div>
       </div>
 
-      <h4 class="section-title">Kode Barcode Aktivasi Akun</h4>
-      <div class="barcode-section">
-        <span class="barcode-font">*${barcodeVal}*</span>
-        <span class="activation-code">CODE: ${activationCode}</span>
+      <h4 class="section-title">Kode Referral Aktivasi Siswa</h4>
+      <div class="referral-section">
+        <span class="referral-code-text">${referralCode}</span>
+        <p style="font-size: 11px; color: #576d63; margin: 8px 0 0 0; font-weight: 500;">Gunakan kode referral ini saat melakukan registrasi pembuatan akun siswa di cabang terdekat SMLONE</p>
       </div>
 
       <div class="instructions-section">
@@ -905,10 +890,10 @@ function App() {
                   </div>
                 </div>
 
-                <h4 className="sp-section-title">Kode Barcode Aktivasi Akun</h4>
+                <h4 className="sp-section-title">Kode Referral Aktivasi Siswa</h4>
                 <div className="sp-barcode-box">
-                  <span className="sp-barcode">*{getBarcodeValue()}*</span>
-                  <span className="sp-code">CODE: {getActivationCode()}</span>
+                  <span className="sp-referral-code">{getReferralCode()}</span>
+                  <p style={{fontSize: '12px', color: '#576d63', margin: '8px 0 0 0', fontWeight: 500}}>Gunakan kode referral ini saat melakukan registrasi pembuatan akun siswa di cabang terdekat SMLONE</p>
                 </div>
 
                 <div className="sp-instructions">
