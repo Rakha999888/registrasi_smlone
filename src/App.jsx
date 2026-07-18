@@ -63,6 +63,7 @@ function App() {
 
   // Custom Dropdown Open State
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isBranchDropdownOpen, setIsBranchDropdownOpen] = useState(false);
 
   // Helper to clear localStorage on submit/reset
   const clearLocalStorage = () => {
@@ -117,8 +118,17 @@ function App() {
   // Handle click outside dropdown to close it
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest('.custom-dropdown-container')) {
+      const closestContainer = event.target.closest('.custom-dropdown-container');
+      if (!closestContainer) {
         setIsDropdownOpen(false);
+        setIsBranchDropdownOpen(false);
+      } else {
+        if (!closestContainer.classList.contains('program-dropdown')) {
+          setIsDropdownOpen(false);
+        }
+        if (!closestContainer.classList.contains('branch-dropdown')) {
+          setIsBranchDropdownOpen(false);
+        }
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -682,7 +692,7 @@ function App() {
                   <label className="form-label">
                     Program <span className="required-asterisk">*</span>
                   </label>
-                  <div className="custom-dropdown-container">
+                  <div className="custom-dropdown-container program-dropdown">
                     <div 
                       className={`custom-dropdown-trigger ${errors.programSelected ? 'has-error' : ''} ${isDropdownOpen ? 'open' : ''}`}
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -748,37 +758,50 @@ function App() {
                   <p className="form-help-text">
                     Pilih cabang lokasi pendaftaran SMLONE
                   </p>
-                  <div className="branches-grid">
+                  <div className="custom-dropdown-container branch-dropdown">
                     <div 
-                      className={`option-card ${branchSelected === 'Cemara' ? 'selected' : ''}`}
-                      onClick={() => {
-                        setBranchSelected('Cemara');
-                        if (errors.branchSelected) setErrors({ ...errors, branchSelected: null });
-                      }}
+                      className={`custom-dropdown-trigger ${errors.branchSelected ? 'has-error' : ''} ${isBranchDropdownOpen ? 'open' : ''}`}
+                      onClick={() => setIsBranchDropdownOpen(!isBranchDropdownOpen)}
                     >
-                      <span className="option-indicator"></span>
-                      Cemara
+                      <span>{branchSelected || 'Choose'}</span>
+                      <svg className="chevron-icon" viewBox="0 0 24 24">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
                     </div>
-                    <div 
-                      className={`option-card ${branchSelected === 'Timor' ? 'selected' : ''}`}
-                      onClick={() => {
-                        setBranchSelected('Timor');
-                        if (errors.branchSelected) setErrors({ ...errors, branchSelected: null });
-                      }}
-                    >
-                      <span className="option-indicator"></span>
-                      Timor
-                    </div>
-                    <div 
-                      className={`option-card ${branchSelected === 'Tritura' ? 'selected' : ''}`}
-                      onClick={() => {
-                        setBranchSelected('Tritura');
-                        if (errors.branchSelected) setErrors({ ...errors, branchSelected: null });
-                      }}
-                    >
-                      <span className="option-indicator"></span>
-                      Tritura
-                    </div>
+                    {isBranchDropdownOpen && (
+                      <div className="custom-dropdown-options">
+                        <div 
+                          className={`custom-dropdown-option ${branchSelected === 'Cemara' ? 'selected' : ''}`}
+                          onClick={() => {
+                            setBranchSelected('Cemara');
+                            setIsBranchDropdownOpen(false);
+                            if (errors.branchSelected) setErrors({ ...errors, branchSelected: null });
+                          }}
+                        >
+                          Cemara
+                        </div>
+                        <div 
+                          className={`custom-dropdown-option ${branchSelected === 'Timor' ? 'selected' : ''}`}
+                          onClick={() => {
+                            setBranchSelected('Timor');
+                            setIsBranchDropdownOpen(false);
+                            if (errors.branchSelected) setErrors({ ...errors, branchSelected: null });
+                          }}
+                        >
+                          Timor
+                        </div>
+                        <div 
+                          className={`custom-dropdown-option ${branchSelected === 'Tritura' ? 'selected' : ''}`}
+                          onClick={() => {
+                            setBranchSelected('Tritura');
+                            setIsBranchDropdownOpen(false);
+                            if (errors.branchSelected) setErrors({ ...errors, branchSelected: null });
+                          }}
+                        >
+                          Tritura
+                        </div>
+                      </div>
+                    )}
                   </div>
                   {errors.branchSelected && <div className="error-message">⚠️ {errors.branchSelected}</div>}
                 </div>
