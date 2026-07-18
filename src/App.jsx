@@ -357,6 +357,332 @@ function App() {
     }
   };
 
+  // Generate student card activation code & barcode text
+  const getActivationCode = () => {
+    const formattedDob = dob ? dob.replace(/-/g, '') : '20000101';
+    const lastFourPhone = contact ? contact.trim().slice(-4) : '0000';
+    return `SML-${formattedDob}-${lastFourPhone}`;
+  };
+
+  const getBarcodeValue = () => {
+    const formattedDob = dob ? dob.replace(/-/g, '') : '20000101';
+    const lastFourPhone = contact ? contact.trim().slice(-4) : '0000';
+    return `SML${formattedDob}${lastFourPhone}`;
+  };
+
+  const generateCardHTML = (isForPrinting = false) => {
+    const activationCode = getActivationCode();
+    const barcodeVal = getBarcodeValue();
+    const logoUrl = window.location.origin + smloneLogo;
+    
+    return `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Kartu Registrasi SMLONE - ${fullName}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Barcode+39&family=Outfit:wght@600;700;800&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      background-color: #f3f6f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #2f3e37;
+    }
+    .card-container {
+      width: 100%;
+      max-width: 580px;
+      background: #ffffff;
+      border: 2px solid #0f5132;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(15, 81, 50, 0.1);
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    .card-header {
+      background-color: #0f5132;
+      padding: 24px;
+      text-align: center;
+      color: #ffffff;
+      border-bottom: 4px solid #b45309;
+    }
+    .logo-container {
+      margin-bottom: 8px;
+    }
+    .logo-img {
+      height: 50px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+    }
+    .card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin: 4px 0 0 0;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .card-subtitle {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.85);
+      margin: 4px 0 0 0;
+      font-weight: 500;
+    }
+    .card-body {
+      padding: 24px;
+    }
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f5132;
+      border-bottom: 2px dashed #d1dbd6;
+      padding-bottom: 6px;
+      margin: 0 0 14px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .detail-label {
+      font-size: 11px;
+      color: #576d63;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .detail-value {
+      font-size: 13.5px;
+      color: #0f1c16;
+      font-weight: 700;
+    }
+    .barcode-section {
+      background: #f8faf9;
+      border: 1.5px solid #d1dbd6;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .barcode-font {
+      font-family: 'Libre Barcode 39', cursive;
+      font-size: 64px;
+      line-height: 1;
+      margin: 8px 0;
+      color: #000000;
+      display: block;
+      user-select: none;
+    }
+    .activation-code {
+      font-family: monospace;
+      font-size: 14px;
+      font-weight: 700;
+      color: #b45309;
+      background: rgba(180, 83, 9, 0.08);
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: inline-block;
+      letter-spacing: 1px;
+    }
+    .instructions-section {
+      background: rgba(15, 81, 50, 0.03);
+      border-left: 4px solid #0f5132;
+      padding: 14px;
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 20px;
+    }
+    .instructions-text {
+      font-size: 12px;
+      line-height: 1.6;
+      color: #2f3e37;
+      margin: 0;
+    }
+    .branches-section {
+      background: #ffffff;
+    }
+    .branch-card {
+      border: 1.5px solid #d1dbd6;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      transition: all 0.2s ease;
+    }
+    .branch-card.highlighted {
+      border-color: #0f5132;
+      background-color: rgba(15, 81, 50, 0.03);
+    }
+    .branch-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f5132;
+      margin: 0 0 3px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .branch-badge {
+      background-color: #b45309;
+      color: #ffffff;
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .branch-address {
+      font-size: 11px;
+      color: #576d63;
+      margin: 0;
+      line-height: 1.4;
+    }
+    .footer-note {
+      text-align: center;
+      font-size: 11px;
+      color: #576d63;
+      margin-top: 20px;
+      border-top: 1px solid #d1dbd6;
+      padding-top: 14px;
+    }
+    @media print {
+      body {
+        background-color: #ffffff;
+        padding: 0;
+      }
+      .card-container {
+        box-shadow: none;
+        border: 2px solid #0f5132;
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card-container">
+    <div class="card-header">
+      <div class="logo-container">
+        <img src="${logoUrl}" class="logo-img" alt="SMLONE Logo" />
+      </div>
+      <div class="card-title">Portal Student Registration</div>
+      <div class="card-subtitle">SMLONE Indonesia - Student Account Activation</div>
+    </div>
+    <div class="card-body">
+      <h4 class="section-title">Data Registrasi Siswa</h4>
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="detail-label">Nama Lengkap</span>
+          <span class="detail-value">${fullName}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Program Pilihan</span>
+          <span class="detail-value">${programSelected}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Tanggal Lahir</span>
+          <span class="detail-value">${dob}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Cabang Registrasi</span>
+          <span class="detail-value">${branchSelected}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">No. Whatsapp</span>
+          <span class="detail-value">${contact}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Email Terdaftar</span>
+          <span class="detail-value">${email}</span>
+        </div>
+      </div>
+
+      <h4 class="section-title">Kode Barcode Aktivasi Akun</h4>
+      <div class="barcode-section">
+        <span class="barcode-font">*${barcodeVal}*</span>
+        <span class="activation-code">CODE: ${activationCode}</span>
+      </div>
+
+      <div class="instructions-section">
+        <p class="instructions-text">
+          <strong>PENTING:</strong> Segera datang ke cabang terdekat SMLONE. Tunjukkan kartu registrasi ini ke meja pelayanan, nanti pembuatan akun SMLONE Portal Students Anda akan langsung dibantu oleh <strong>Customer Relation Officer (CRO)</strong> di setiap cabang SMLONE.
+        </p>
+      </div>
+
+      <h4 class="section-title">Lokasi Cabang SMLONE</h4>
+      <div class="branches-section">
+        <div class="branch-card ${branchSelected === 'Cemara' ? 'highlighted' : ''}">
+          <div class="branch-name">
+            SMLONE CEMARA ASRI
+            ${branchSelected === 'Cemara' ? '<span class="branch-badge">Cabang Anda</span>' : ''}
+          </div>
+          <p class="branch-address">SMLONE CEMARA ASRI, Komplek Cemara Asri, Jalan Boulevard Timur 88U-88V, Medan Estate, Kec. Percut Sei Tuan, Kabupaten Deli Serdang, Sumatera Utara 20371</p>
+        </div>
+        <div class="branch-card ${branchSelected === 'Timor' ? 'highlighted' : ''}">
+          <div class="branch-name">
+            SMLONE TIMOR
+            ${branchSelected === 'Timor' ? '<span class="branch-badge">Cabang Anda</span>' : ''}
+          </div>
+          <p class="branch-address">SMLONE INDONESIA, Jl. Timor No.10 F, Gang Buntu, Medan Timur, Medan City, North Sumatra 20232</p>
+        </div>
+        <div class="branch-card ${branchSelected === 'Tritura' ? 'highlighted' : ''}">
+          <div class="branch-name">
+            SMLONE TRITURA
+            ${branchSelected === 'Tritura' ? '<span class="branch-badge">Cabang Anda</span>' : ''}
+          </div>
+          <p class="branch-address">SMLONE INDONESIA, Jl. Timor No.10 F, Gang Buntu, Medan Timur, Medan City, North Sumatra 20232</p>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        Terima kasih telah bergabung dengan SMLONE Indonesia.
+      </div>
+    </div>
+  </div>
+  ${isForPrinting ? `
+  <script>
+    window.onload = function() {
+      setTimeout(function() {
+        window.print();
+      }, 500);
+    }
+  </script>
+  ` : ''}
+</body>
+</html>`;
+  };
+
+  const handlePrintCard = () => {
+    const printWindow = window.open('', '_blank', 'width=800,height=900');
+    const content = generateCardHTML(true);
+    printWindow.document.open();
+    printWindow.document.write(content);
+    printWindow.document.close();
+  };
+
+  const handleDownloadHTML = () => {
+    const content = generateCardHTML(false);
+    const blob = new Blob([content], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `SMLONE_Student_Card_${fullName.replace(/\s+/g, '_')}.html`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   // Reset Form
   const handleReset = () => {
     clearLocalStorage();
@@ -543,7 +869,108 @@ function App() {
               </div>
             </div>
 
-            <button type="button" className="reset-button" onClick={handleReset}>
+            {/* Visual Student Portal Activation Card */}
+            <div className="student-portal-card">
+              <div className="sp-card-header">
+                <img src={smloneLogo} className="brand-logo" alt="SMLONE Logo" />
+                <h3>Portal Student Registration</h3>
+                <p>SMLONE Indonesia - Student Account Activation</p>
+              </div>
+              <div className="sp-card-body">
+                <h4 className="sp-section-title">Data Registrasi Siswa</h4>
+                <div className="sp-detail-grid">
+                  <div className="sp-detail-item">
+                    <span className="sp-detail-label">Nama Lengkap</span>
+                    <span className="sp-detail-value">{fullName}</span>
+                  </div>
+                  <div className="sp-detail-item">
+                    <span className="sp-detail-label">Program Pilihan</span>
+                    <span className="sp-detail-value">{programSelected}</span>
+                  </div>
+                  <div className="sp-detail-item">
+                    <span className="sp-detail-label">Tanggal Lahir</span>
+                    <span className="sp-detail-value">{dob}</span>
+                  </div>
+                  <div className="sp-detail-item">
+                    <span className="sp-detail-label">Cabang Registrasi</span>
+                    <span className="sp-detail-value">{branchSelected}</span>
+                  </div>
+                  <div className="sp-detail-item">
+                    <span className="sp-detail-label">No. Whatsapp</span>
+                    <span className="sp-detail-value">{contact}</span>
+                  </div>
+                  <div className="sp-detail-item">
+                    <span className="sp-detail-label">Email Terdaftar</span>
+                    <span className="sp-detail-value">{email}</span>
+                  </div>
+                </div>
+
+                <h4 className="sp-section-title">Kode Barcode Aktivasi Akun</h4>
+                <div className="sp-barcode-box">
+                  <span className="sp-barcode">*{getBarcodeValue()}*</span>
+                  <span className="sp-code">CODE: {getActivationCode()}</span>
+                </div>
+
+                <div className="sp-instructions">
+                  <p>
+                    <strong>PENTING:</strong> Segera datang ke cabang terdekat SMLONE. Tunjukkan kartu registrasi ini ke meja pelayanan, nanti pembuatan akun SMLONE Portal Students Anda akan langsung dibantu oleh <strong>Customer Relation Officer (CRO)</strong> di setiap cabang SMLONE.
+                  </p>
+                </div>
+
+                <h4 className="sp-section-title">Lokasi Cabang SMLONE</h4>
+                <div className="sp-branch-list">
+                  <div className={`sp-branch-item ${branchSelected === 'Cemara' ? 'active' : ''}`}>
+                    <div className="sp-branch-name">
+                      SMLONE CEMARA ASRI
+                      {branchSelected === 'Cemara' && <span className="sp-branch-badge">Cabang Anda</span>}
+                    </div>
+                    <p className="sp-branch-address">
+                      Komplek Cemara Asri, Jalan Boulevard Timur 88U-88V, Medan Estate, Kec. Percut Sei Tuan, Kabupaten Deli Serdang, Sumatera Utara 20371
+                    </p>
+                  </div>
+                  <div className={`sp-branch-item ${branchSelected === 'Timor' ? 'active' : ''}`}>
+                    <div className="sp-branch-name">
+                      SMLONE TIMOR
+                      {branchSelected === 'Timor' && <span className="sp-branch-badge">Cabang Anda</span>}
+                    </div>
+                    <p className="sp-branch-address">
+                      SMLONE INDONESIA, Jl. Timor No.10 F, Gang Buntu, Medan Timur, Medan City, North Sumatra 20232
+                    </p>
+                  </div>
+                  <div className={`sp-branch-item ${branchSelected === 'Tritura' ? 'active' : ''}`}>
+                    <div className="sp-branch-name">
+                      SMLONE TRITURA
+                      {branchSelected === 'Tritura' && <span className="sp-branch-badge">Cabang Anda</span>}
+                    </div>
+                    <p className="sp-branch-address">
+                      SMLONE INDONESIA, Jl. Timor No.10 F, Gang Buntu, Medan Timur, Medan City, North Sumatra 20232
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons Group */}
+            <div className="success-action-group">
+              <button type="button" className="primary-action-button" onClick={handlePrintCard}>
+                <svg className="action-btn-icon" viewBox="0 0 24 24">
+                  <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                  <rect x="6" y="14" width="12" height="8"></rect>
+                </svg>
+                Cetak / Simpan PDF
+              </button>
+              <button type="button" className="secondary-action-button" onClick={handleDownloadHTML}>
+                <svg className="action-btn-icon" viewBox="0 0 24 24">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Unduh Kartu Registrasi
+              </button>
+            </div>
+
+            <button type="button" className="reset-button" onClick={handleReset} style={{ width: '100%' }}>
               Isi Formulir Baru
             </button>
           </div>
