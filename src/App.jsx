@@ -1402,12 +1402,12 @@ function App() {
                 {(programSelected.includes('Apprentice') || programSelected.includes('Junior/Youth')) && (
                   <div className="form-group" id="subProgramSelected">
                     <h2 style={{ fontSize: '20px', marginBottom: '4px', fontFamily: 'var(--font-heading)', color: 'var(--primary)' }}>
-                      Apprentice/Junior/Youth Program Registration
+                      Pilih Program Training SMLONE
                     </h2>
-                    <p className="form-help-text" style={{ marginBottom: '16px' }}>Pendaftaran Program SMLONE</p>
+                    <p className="form-help-text" style={{ marginBottom: '16px' }}>The Apprentice · Core · Orator Society</p>
 
                     <label className="form-label">
-                      Apprentice/Junior/Youth SMLONE Program Yang Dipilih <span className="required-asterisk">*</span>
+                      Program SMLONE yang Dipilih <span className="required-asterisk">*</span>
                     </label>
                     <div className="options-grid" style={{ gridTemplateColumns: '1fr', gap: '12px' }}>
                       <div 
