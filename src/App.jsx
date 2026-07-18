@@ -58,7 +58,7 @@ function App() {
   // Form Status States
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(() => localStorage.getItem('smlone_isSubmitted') === 'true');
   const [submitError, setSubmitError] = useState('');
 
   // Custom Dropdown Open State
@@ -74,7 +74,7 @@ function App() {
       'smlone_subProgramSelected', 'smlone_schoolName', 'smlone_schoolGrade', 'smlone_parentEmail',
       'smlone_emergencyName', 'smlone_emergencyNumber', 'smlone_referralSource',
       'smlone_referralOtherText', 'smlone_referralFriendName', 'smlone_instagramMama',
-      'smlone_instagramPapa', 'smlone_instagramAnak'
+      'smlone_instagramPapa', 'smlone_instagramAnak', 'smlone_isSubmitted'
     ];
     keys.forEach(key => localStorage.removeItem(key));
   };
@@ -107,12 +107,13 @@ function App() {
     localStorage.setItem('smlone_instagramMama', instagramMama);
     localStorage.setItem('smlone_instagramPapa', instagramPapa);
     localStorage.setItem('smlone_instagramAnak', instagramAnak);
+    localStorage.setItem('smlone_isSubmitted', isSubmitted.toString());
   }, [
     step, email, fullName, dob, gender, address, contact, programSelected, branchSelected,
     hasPriorProgram, priorPrograms, otherProgramText, todayDate, consent,
     subProgramSelected, schoolName, schoolGrade, parentEmail, emergencyName,
     emergencyNumber, referralSource, referralOtherText, referralFriendName,
-    instagramMama, instagramPapa, instagramAnak
+    instagramMama, instagramPapa, instagramAnak, isSubmitted
   ]);
 
   // Handle click outside dropdown to close it
@@ -336,7 +337,6 @@ function App() {
         });
 
         if (response.ok) {
-          clearLocalStorage();
           setIsSubmitting(false);
           setIsSubmitted(true);
           window.scrollTo({ top: 0, behavior: 'smooth' });
