@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import smloneLogo from './assets/smlone_logo.png';
 import imgApprentice from './assets/gambar/apprentice.png';
 import imgJunior from './assets/gambar/junior.jpg';
-import imgProfesional from './assets/gambar/profesional.png';
 import imgYouth from './assets/gambar/youth.jpg';
 import './App.css';
 
@@ -592,13 +591,11 @@ function App() {
         </div>
       </div>
 
-      ${programSelected !== 'Profesional' ? `
       <h4 class="section-title">Kode Referral Aktivasi Siswa</h4>
       <div class="referral-section">
         <span class="referral-code-text">${referralCode}</span>
         <p style="font-size: 11px; color: #576d63; margin: 8px 0 0 0; font-weight: 500;">Gunakan kode referral ini saat melakukan registrasi pembuatan akun siswa di cabang terdekat SMLONE</p>
       </div>
-      ` : ''}
 
       <div class="instructions-section">
         <p class="instructions-text">
@@ -892,15 +889,11 @@ function App() {
                   </div>
                 </div>
 
-                {programSelected !== 'Profesional' && (
-                  <>
-                    <h4 className="sp-section-title">Kode Referral Aktivasi Siswa</h4>
-                    <div className="sp-barcode-box">
-                      <span className="sp-referral-code">{getReferralCode()}</span>
-                      <p style={{fontSize: '12px', color: '#576d63', margin: '8px 0 0 0', fontWeight: 500}}>Gunakan kode referral ini saat melakukan registrasi pembuatan akun siswa di cabang terdekat SMLONE</p>
-                    </div>
-                  </>
-                )}
+                <h4 className="sp-section-title">Kode Referral Aktivasi Siswa</h4>
+                <div className="sp-barcode-box">
+                  <span className="sp-referral-code">{getReferralCode()}</span>
+                  <p style={{fontSize: '12px', color: '#576d63', margin: '8px 0 0 0', fontWeight: 500}}>Gunakan kode referral ini saat melakukan registrasi pembuatan akun siswa di cabang terdekat SMLONE</p>
+                </div>
 
                 <div className="sp-instructions">
                   <p>
@@ -1153,16 +1146,6 @@ function App() {
                           }}
                         >
                           Program Orator 101
-                        </div>
-                        <div 
-                          className={`custom-dropdown-option ${programSelected === 'Professionals' ? 'selected' : ''}`}
-                          onClick={() => {
-                            setProgramSelected('Professionals');
-                            setIsDropdownOpen(false);
-                            if (errors.programSelected) setErrors({ ...errors, programSelected: null });
-                          }}
-                        >
-                          Professionals
                         </div>
                       </div>
                     )}
@@ -1733,11 +1716,11 @@ function App() {
         
         <div className="activity-card">
           <div className="activity-image-wrapper">
-            <img src={imgProfesional} className="activity-image" alt="Professionals Program" style={{ objectPosition: 'center 15%' }} />
+            <img src={imgJunior} className="activity-image" alt="Junior Program" style={{ objectPosition: 'center 15%' }} />
           </div>
           <div className="activity-overlay">
-            <h4 className="activity-title">Professionals</h4>
-            <p className="activity-subtitle">Program Public Speaking Dewasa</p>
+            <h4 className="activity-title">Junior</h4>
+            <p className="activity-subtitle">Program Kelas 4 SD - 6 SD</p>
           </div>
         </div>
       </aside>
