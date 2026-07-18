@@ -27,6 +27,7 @@ function App() {
   const [address, setAddress] = useState(() => localStorage.getItem('smlone_address') || '');
   const [contact, setContact] = useState(() => localStorage.getItem('smlone_contact') || '');
   const [programSelected, setProgramSelected] = useState(() => localStorage.getItem('smlone_programSelected') || '');
+  const [branchSelected, setBranchSelected] = useState(() => localStorage.getItem('smlone_branchSelected') || '');
   const [hasPriorProgram, setHasPriorProgram] = useState(() => localStorage.getItem('smlone_hasPriorProgram') || '');
   const [priorPrograms, setPriorPrograms] = useState(() => {
     try {
@@ -67,7 +68,7 @@ function App() {
   const clearLocalStorage = () => {
     const keys = [
       'smlone_step', 'smlone_email', 'smlone_fullName', 'smlone_dob', 'smlone_gender',
-      'smlone_address', 'smlone_contact', 'smlone_programSelected', 'smlone_hasPriorProgram',
+      'smlone_address', 'smlone_contact', 'smlone_programSelected', 'smlone_branchSelected', 'smlone_hasPriorProgram',
       'smlone_priorPrograms', 'smlone_otherProgramText', 'smlone_todayDate', 'smlone_consent',
       'smlone_subProgramSelected', 'smlone_schoolName', 'smlone_schoolGrade', 'smlone_parentEmail',
       'smlone_emergencyName', 'smlone_emergencyNumber', 'smlone_referralSource',
@@ -87,6 +88,7 @@ function App() {
     localStorage.setItem('smlone_address', address);
     localStorage.setItem('smlone_contact', contact);
     localStorage.setItem('smlone_programSelected', programSelected);
+    localStorage.setItem('smlone_branchSelected', branchSelected);
     localStorage.setItem('smlone_hasPriorProgram', hasPriorProgram);
     localStorage.setItem('smlone_priorPrograms', JSON.stringify(priorPrograms));
     localStorage.setItem('smlone_otherProgramText', otherProgramText);
@@ -105,7 +107,7 @@ function App() {
     localStorage.setItem('smlone_instagramPapa', instagramPapa);
     localStorage.setItem('smlone_instagramAnak', instagramAnak);
   }, [
-    step, email, fullName, dob, gender, address, contact, programSelected,
+    step, email, fullName, dob, gender, address, contact, programSelected, branchSelected,
     hasPriorProgram, priorPrograms, otherProgramText, todayDate, consent,
     subProgramSelected, schoolName, schoolGrade, parentEmail, emergencyName,
     emergencyNumber, referralSource, referralOtherText, referralFriendName,
@@ -177,6 +179,10 @@ function App() {
 
     if (!programSelected) {
       newErrors.programSelected = 'Pilih salah satu program training';
+    }
+
+    if (!branchSelected) {
+      newErrors.branchSelected = 'Pilih salah satu cabang SMLONE';
     }
 
     // Optional field, no validation needed
@@ -288,6 +294,7 @@ function App() {
         address,
         contact,
         programSelected,
+        branchSelected,
         hasPriorProgram,
         priorPrograms,
         otherProgramText,
@@ -349,6 +356,7 @@ function App() {
     setAddress('');
     setContact('');
     setProgramSelected('');
+    setBranchSelected('');
     setHasPriorProgram('');
     setPriorPrograms([]);
     setOtherProgramText('');
@@ -455,6 +463,10 @@ function App() {
                 <div className="summary-row">
                   <span className="summary-label">Program Pilihan</span>
                   <span className="summary-val">{programSelected}</span>
+                </div>
+                <div className="summary-row">
+                  <span className="summary-label">Cabang Lokasi</span>
+                  <span className="summary-val">{branchSelected}</span>
                 </div>
                 <div className="summary-row">
                   <span className="summary-label">Alamat</span>
@@ -726,6 +738,49 @@ function App() {
                     )}
                   </div>
                   {errors.programSelected && <div className="error-message">⚠️ {errors.programSelected}</div>}
+                </div>
+
+                {/* SMLONE Branch Selection */}
+                <div className="form-group" id="branchSelected">
+                  <label className="form-label">
+                    Pilihan Cabang <span className="required-asterisk">*</span>
+                  </label>
+                  <p className="form-help-text">
+                    Pilih cabang lokasi pendaftaran SMLONE
+                  </p>
+                  <div className="branches-grid">
+                    <div 
+                      className={`option-card ${branchSelected === 'Cemara' ? 'selected' : ''}`}
+                      onClick={() => {
+                        setBranchSelected('Cemara');
+                        if (errors.branchSelected) setErrors({ ...errors, branchSelected: null });
+                      }}
+                    >
+                      <span className="option-indicator"></span>
+                      Cemara
+                    </div>
+                    <div 
+                      className={`option-card ${branchSelected === 'Timor' ? 'selected' : ''}`}
+                      onClick={() => {
+                        setBranchSelected('Timor');
+                        if (errors.branchSelected) setErrors({ ...errors, branchSelected: null });
+                      }}
+                    >
+                      <span className="option-indicator"></span>
+                      Timor
+                    </div>
+                    <div 
+                      className={`option-card ${branchSelected === 'Tritura' ? 'selected' : ''}`}
+                      onClick={() => {
+                        setBranchSelected('Tritura');
+                        if (errors.branchSelected) setErrors({ ...errors, branchSelected: null });
+                      }}
+                    >
+                      <span className="option-indicator"></span>
+                      Tritura
+                    </div>
+                  </div>
+                  {errors.branchSelected && <div className="error-message">⚠️ {errors.branchSelected}</div>}
                 </div>
 
                 {/* 7. SMLONE Prior Program Question */}
