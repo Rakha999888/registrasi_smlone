@@ -305,6 +305,8 @@ function App() {
         contact,
         programSelected,
         branchSelected,
+        cabang: branchSelected,
+        branch: branchSelected,
         hasPriorProgram,
         priorPrograms,
         otherProgramText,
