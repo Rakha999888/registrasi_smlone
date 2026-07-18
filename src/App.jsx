@@ -592,11 +592,13 @@ function App() {
         </div>
       </div>
 
+      ${programSelected !== 'Profesional' ? `
       <h4 class="section-title">Kode Referral Aktivasi Siswa</h4>
       <div class="referral-section">
         <span class="referral-code-text">${referralCode}</span>
         <p style="font-size: 11px; color: #576d63; margin: 8px 0 0 0; font-weight: 500;">Gunakan kode referral ini saat melakukan registrasi pembuatan akun siswa di cabang terdekat SMLONE</p>
       </div>
+      ` : ''}
 
       <div class="instructions-section">
         <p class="instructions-text">
@@ -890,11 +892,15 @@ function App() {
                   </div>
                 </div>
 
-                <h4 className="sp-section-title">Kode Referral Aktivasi Siswa</h4>
-                <div className="sp-barcode-box">
-                  <span className="sp-referral-code">{getReferralCode()}</span>
-                  <p style={{fontSize: '12px', color: '#576d63', margin: '8px 0 0 0', fontWeight: 500}}>Gunakan kode referral ini saat melakukan registrasi pembuatan akun siswa di cabang terdekat SMLONE</p>
-                </div>
+                {programSelected !== 'Profesional' && (
+                  <>
+                    <h4 className="sp-section-title">Kode Referral Aktivasi Siswa</h4>
+                    <div className="sp-barcode-box">
+                      <span className="sp-referral-code">{getReferralCode()}</span>
+                      <p style={{fontSize: '12px', color: '#576d63', margin: '8px 0 0 0', fontWeight: 500}}>Gunakan kode referral ini saat melakukan registrasi pembuatan akun siswa di cabang terdekat SMLONE</p>
+                    </div>
+                  </>
+                )}
 
                 <div className="sp-instructions">
                   <p>
