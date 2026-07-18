@@ -13,35 +13,42 @@ function App() {
   };
 
   // Form Pagination State
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(() => Number(localStorage.getItem('smlone_step')) || 1);
 
   // ==================== PAGE 1 FIELDS (Participant details) ====================
-  const [email, setEmail] = useState('');
-  const [fullName, setFullName] = useState('');
-  const [dob, setDob] = useState('');
-  const [gender, setGender] = useState('');
-  const [address, setAddress] = useState('');
-  const [contact, setContact] = useState('');
-  const [programSelected, setProgramSelected] = useState('');
-  const [hasPriorProgram, setHasPriorProgram] = useState('');
-  const [priorPrograms, setPriorPrograms] = useState([]);
-  const [otherProgramText, setOtherProgramText] = useState('');
-  const [todayDate, setTodayDate] = useState(getTodayFormattedDate());
-  const [consent, setConsent] = useState(false);
+  const [email, setEmail] = useState(() => localStorage.getItem('smlone_email') || '');
+  const [fullName, setFullName] = useState(() => localStorage.getItem('smlone_fullName') || '');
+  const [dob, setDob] = useState(() => localStorage.getItem('smlone_dob') || '');
+  const [gender, setGender] = useState(() => localStorage.getItem('smlone_gender') || '');
+  const [address, setAddress] = useState(() => localStorage.getItem('smlone_address') || '');
+  const [contact, setContact] = useState(() => localStorage.getItem('smlone_contact') || '');
+  const [programSelected, setProgramSelected] = useState(() => localStorage.getItem('smlone_programSelected') || '');
+  const [hasPriorProgram, setHasPriorProgram] = useState(() => localStorage.getItem('smlone_hasPriorProgram') || '');
+  const [priorPrograms, setPriorPrograms] = useState(() => {
+    try {
+      const saved = localStorage.getItem('smlone_priorPrograms');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [otherProgramText, setOtherProgramText] = useState(() => localStorage.getItem('smlone_otherProgramText') || '');
+  const [todayDate, setTodayDate] = useState(() => localStorage.getItem('smlone_todayDate') || getTodayFormattedDate());
+  const [consent, setConsent] = useState(() => localStorage.getItem('smlone_consent') === 'true');
 
   // ==================== PAGE 2 FIELDS (Parent & Education details) ====================
-  const [subProgramSelected, setSubProgramSelected] = useState('');
-  const [schoolName, setSchoolName] = useState('');
-  const [schoolGrade, setSchoolGrade] = useState('');
-  const [parentEmail, setParentEmail] = useState('');
-  const [emergencyName, setEmergencyName] = useState('');
-  const [emergencyNumber, setEmergencyNumber] = useState('');
-  const [referralSource, setReferralSource] = useState('');
-  const [referralOtherText, setReferralOtherText] = useState('');
-  const [referralFriendName, setReferralFriendName] = useState('');
-  const [instagramMama, setInstagramMama] = useState('');
-  const [instagramPapa, setInstagramPapa] = useState('');
-  const [instagramAnak, setInstagramAnak] = useState('');
+  const [subProgramSelected, setSubProgramSelected] = useState(() => localStorage.getItem('smlone_subProgramSelected') || '');
+  const [schoolName, setSchoolName] = useState(() => localStorage.getItem('smlone_schoolName') || '');
+  const [schoolGrade, setSchoolGrade] = useState(() => localStorage.getItem('smlone_schoolGrade') || '');
+  const [parentEmail, setParentEmail] = useState(() => localStorage.getItem('smlone_parentEmail') || '');
+  const [emergencyName, setEmergencyName] = useState(() => localStorage.getItem('smlone_emergencyName') || '');
+  const [emergencyNumber, setEmergencyNumber] = useState(() => localStorage.getItem('smlone_emergencyNumber') || '');
+  const [referralSource, setReferralSource] = useState(() => localStorage.getItem('smlone_referralSource') || '');
+  const [referralOtherText, setReferralOtherText] = useState(() => localStorage.getItem('smlone_referralOtherText') || '');
+  const [referralFriendName, setReferralFriendName] = useState(() => localStorage.getItem('smlone_referralFriendName') || '');
+  const [instagramMama, setInstagramMama] = useState(() => localStorage.getItem('smlone_instagramMama') || '');
+  const [instagramPapa, setInstagramPapa] = useState(() => localStorage.getItem('smlone_instagramPapa') || '');
+  const [instagramAnak, setInstagramAnak] = useState(() => localStorage.getItem('smlone_instagramAnak') || '');
 
   // Form Status States
   const [errors, setErrors] = useState({});
@@ -51,6 +58,55 @@ function App() {
 
   // Custom Dropdown Open State
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // Helper to clear localStorage on submit/reset
+  const clearLocalStorage = () => {
+    const keys = [
+      'smlone_step', 'smlone_email', 'smlone_fullName', 'smlone_dob', 'smlone_gender',
+      'smlone_address', 'smlone_contact', 'smlone_programSelected', 'smlone_hasPriorProgram',
+      'smlone_priorPrograms', 'smlone_otherProgramText', 'smlone_todayDate', 'smlone_consent',
+      'smlone_subProgramSelected', 'smlone_schoolName', 'smlone_schoolGrade', 'smlone_parentEmail',
+      'smlone_emergencyName', 'smlone_emergencyNumber', 'smlone_referralSource',
+      'smlone_referralOtherText', 'smlone_referralFriendName', 'smlone_instagramMama',
+      'smlone_instagramPapa', 'smlone_instagramAnak'
+    ];
+    keys.forEach(key => localStorage.removeItem(key));
+  };
+
+  // Sync state to localStorage
+  useEffect(() => {
+    localStorage.setItem('smlone_step', step.toString());
+    localStorage.setItem('smlone_email', email);
+    localStorage.setItem('smlone_fullName', fullName);
+    localStorage.setItem('smlone_dob', dob);
+    localStorage.setItem('smlone_gender', gender);
+    localStorage.setItem('smlone_address', address);
+    localStorage.setItem('smlone_contact', contact);
+    localStorage.setItem('smlone_programSelected', programSelected);
+    localStorage.setItem('smlone_hasPriorProgram', hasPriorProgram);
+    localStorage.setItem('smlone_priorPrograms', JSON.stringify(priorPrograms));
+    localStorage.setItem('smlone_otherProgramText', otherProgramText);
+    localStorage.setItem('smlone_todayDate', todayDate);
+    localStorage.setItem('smlone_consent', consent.toString());
+    localStorage.setItem('smlone_subProgramSelected', subProgramSelected);
+    localStorage.setItem('smlone_schoolName', schoolName);
+    localStorage.setItem('smlone_schoolGrade', schoolGrade);
+    localStorage.setItem('smlone_parentEmail', parentEmail);
+    localStorage.setItem('smlone_emergencyName', emergencyName);
+    localStorage.setItem('smlone_emergencyNumber', emergencyNumber);
+    localStorage.setItem('smlone_referralSource', referralSource);
+    localStorage.setItem('smlone_referralOtherText', referralOtherText);
+    localStorage.setItem('smlone_referralFriendName', referralFriendName);
+    localStorage.setItem('smlone_instagramMama', instagramMama);
+    localStorage.setItem('smlone_instagramPapa', instagramPapa);
+    localStorage.setItem('smlone_instagramAnak', instagramAnak);
+  }, [
+    step, email, fullName, dob, gender, address, contact, programSelected,
+    hasPriorProgram, priorPrograms, otherProgramText, todayDate, consent,
+    subProgramSelected, schoolName, schoolGrade, parentEmail, emergencyName,
+    emergencyNumber, referralSource, referralOtherText, referralFriendName,
+    instagramMama, instagramPapa, instagramAnak
+  ]);
 
   // Handle click outside dropdown to close it
   useEffect(() => {
@@ -257,6 +313,7 @@ function App() {
         });
 
         if (response.ok) {
+          clearLocalStorage();
           setIsSubmitting(false);
           setIsSubmitted(true);
           window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -279,6 +336,7 @@ function App() {
 
   // Reset Form
   const handleReset = () => {
+    clearLocalStorage();
     // Page 1
     setEmail('');
     setFullName('');
