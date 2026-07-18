@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
 import smloneLogo from './assets/smlone_logo.png';
+import imgApprentice from './assets/gambar/apprentice.png';
+import imgJunior from './assets/gambar/junior.jpg';
+import imgProfesional from './assets/gambar/profesional.png';
+import imgYouth from './assets/gambar/youth.jpg';
 import './App.css';
 
 function App() {
@@ -373,7 +377,33 @@ function App() {
 
   return (
     <div className="app-container">
-      <div className="form-card">
+      <div className="page-layout">
+        
+        {/* Left Side Column - Program Activity Images */}
+        <aside className="side-column left-side">
+          <div className="activity-card">
+            <div className="activity-image-wrapper">
+              <img src={imgApprentice} className="activity-image" alt="Apprentice Program" />
+            </div>
+            <div className="activity-overlay">
+              <h4 className="activity-title">Apprentice</h4>
+              <p className="activity-subtitle">Program Kelas 1 SD - 3 SD</p>
+            </div>
+          </div>
+          
+          <div className="activity-card">
+            <div className="activity-image-wrapper">
+              <img src={imgJunior} className="activity-image" alt="Junior Program" />
+            </div>
+            <div className="activity-overlay">
+              <h4 className="activity-title">Junior</h4>
+              <p className="activity-subtitle">Program Kelas 4 SD - 6 SD</p>
+            </div>
+          </div>
+        </aside>
+
+        {/* Center Registration Form Card */}
+        <div className="form-card">
         {/* Header Section */}
         <header className="form-header">
           <div className="brand-logo-container">
@@ -1189,6 +1219,31 @@ function App() {
             )}
           </div>
         )}
+      </div>
+
+      {/* Right Side Column - Program Activity Images */}
+      <aside className="side-column right-side">
+        <div className="activity-card">
+          <div className="activity-image-wrapper">
+            <img src={imgYouth} className="activity-image" alt="Youth Program" />
+          </div>
+          <div className="activity-overlay">
+            <h4 className="activity-title">Youth</h4>
+            <p className="activity-subtitle">Program Kelas 1 SMP - 3 SMA</p>
+          </div>
+        </div>
+        
+        <div className="activity-card">
+          <div className="activity-image-wrapper">
+            <img src={imgProfesional} className="activity-image" alt="Professionals Program" />
+          </div>
+          <div className="activity-overlay">
+            <h4 className="activity-title">Professionals</h4>
+            <p className="activity-subtitle">Program Public Speaking Dewasa</p>
+          </div>
+        </div>
+      </aside>
+
       </div>
     </div>
   );
