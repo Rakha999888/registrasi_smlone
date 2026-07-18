@@ -648,7 +648,8 @@
   width: 290px;
   flex-shrink: 0;
   position: sticky;
-  top: 40px;
+  top: 120px;
+  margin-top: 100px;
 }
 
 .activity-card {
@@ -714,17 +715,52 @@
   font-weight: 400;
 }
 
-/* Hide side columns on tablet/mobile views for balanced styling */
-@media (max-width: 1300px) {
+/* Responsive styles for side columns on desktop viewports */
+@media (max-width: 1400px) {
+  .side-column {
+    width: 240px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .side-column {
+    width: 190px;
+    gap: 16px;
+  }
+  
+  .activity-image-wrapper {
+    height: 150px;
+  }
+
+  .activity-overlay {
+    padding: 16px 12px 12px;
+  }
+
+  .activity-title {
+    font-size: 14px;
+  }
+
+  .activity-subtitle {
+    font-size: 11px;
+  }
+}
+
+/* Hide side columns completely on tablet/mobile views (under 1024px) to preserve form spacing */
+@media (max-width: 1024px) {
   .page-layout {
     flex-direction: column;
     align-items: center;
-    padding: 0;
-    gap: 20px;
+    padding: 20px 10px;
+    gap: 0;
   }
 
   .side-column {
     display: none;
+  }
+
+  .form-card {
+    width: 100%;
+    max-width: 680px;
   }
 }
 

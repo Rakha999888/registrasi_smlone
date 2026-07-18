@@ -383,7 +383,7 @@ function App() {
         <aside className="side-column left-side">
           <div className="activity-card">
             <div className="activity-image-wrapper">
-              <img src={imgApprentice} className="activity-image" alt="Apprentice Program" />
+              <img src={imgApprentice} className="activity-image" alt="Apprentice Program" style={{ objectPosition: 'center 10%' }} />
             </div>
             <div className="activity-overlay">
               <h4 className="activity-title">Apprentice</h4>
@@ -393,7 +393,7 @@ function App() {
           
           <div className="activity-card">
             <div className="activity-image-wrapper">
-              <img src={imgJunior} className="activity-image" alt="Junior Program" />
+              <img src={imgJunior} className="activity-image" alt="Junior Program" style={{ objectPosition: 'center 15%' }} />
             </div>
             <div className="activity-overlay">
               <h4 className="activity-title">Junior</h4>
@@ -1225,7 +1225,7 @@ function App() {
       <aside className="side-column right-side">
         <div className="activity-card">
           <div className="activity-image-wrapper">
-            <img src={imgYouth} className="activity-image" alt="Youth Program" />
+            <img src={imgYouth} className="activity-image" alt="Youth Program" style={{ objectPosition: 'center 10%' }} />
           </div>
           <div className="activity-overlay">
             <h4 className="activity-title">Youth</h4>
@@ -1235,7 +1235,7 @@ function App() {
         
         <div className="activity-card">
           <div className="activity-image-wrapper">
-            <img src={imgProfesional} className="activity-image" alt="Professionals Program" />
+            <img src={imgProfesional} className="activity-image" alt="Professionals Program" style={{ objectPosition: 'center 15%' }} />
           </div>
           <div className="activity-overlay">
             <h4 className="activity-title">Professionals</h4>
