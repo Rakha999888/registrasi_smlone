@@ -327,7 +327,7 @@ function App() {
       };
 
       try {
-        const response = await fetch('https://api.smlone.cloud/api/webhook/level-1-keseluruhan/push', {
+        const response = await fetch('https://api.smlone.cloud/api/registrasi-new', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -713,21 +713,11 @@ function App() {
         <aside className="side-column left-side">
           <div className="activity-card">
             <div className="activity-image-wrapper">
-              <img src={imgApprentice} className="activity-image" alt="Apprentice Program" style={{ objectPosition: 'center 10%' }} />
+              <img src={imgApprentice} className="activity-image" alt="The Apprentice Program" style={{ objectPosition: 'center 10%' }} />
             </div>
             <div className="activity-overlay">
-              <h4 className="activity-title">Apprentice</h4>
+              <h4 className="activity-title">The Apprentice</h4>
               <p className="activity-subtitle">Program Kelas 1 SD - 3 SD</p>
-            </div>
-          </div>
-          
-          <div className="activity-card">
-            <div className="activity-image-wrapper">
-              <img src={imgJunior} className="activity-image" alt="Junior Program" style={{ objectPosition: 'center 15%' }} />
-            </div>
-            <div className="activity-overlay">
-              <h4 className="activity-title">Junior</h4>
-              <p className="activity-subtitle">Program Kelas 4 SD - 6 SD</p>
             </div>
           </div>
         </aside>
@@ -1402,12 +1392,12 @@ function App() {
                 {(programSelected.includes('Apprentice') || programSelected.includes('Junior/Youth')) && (
                   <div className="form-group" id="subProgramSelected">
                     <h2 style={{ fontSize: '20px', marginBottom: '4px', fontFamily: 'var(--font-heading)', color: 'var(--primary)' }}>
-                      Pilih Program Training SMLONE
+                      Apprentice/Junior/Youth Program Registration
                     </h2>
-                    <p className="form-help-text" style={{ marginBottom: '16px' }}>The Apprentice · Core · Orator Society</p>
+                    <p className="form-help-text" style={{ marginBottom: '16px' }}>Pendaftaran Program SMLONE</p>
 
                     <label className="form-label">
-                      Program SMLONE yang Dipilih <span className="required-asterisk">*</span>
+                      Apprentice/Junior/Youth SMLONE Program Yang Dipilih <span className="required-asterisk">*</span>
                     </label>
                     <div className="options-grid" style={{ gridTemplateColumns: '1fr', gap: '12px' }}>
                       <div 
@@ -1706,21 +1696,21 @@ function App() {
       <aside className="side-column right-side">
         <div className="activity-card">
           <div className="activity-image-wrapper">
-            <img src={imgYouth} className="activity-image" alt="Youth Program" style={{ objectPosition: 'center 10%' }} />
+            <img src={imgJunior} className="activity-image" alt="Core Program" style={{ objectPosition: 'center 15%' }} />
           </div>
           <div className="activity-overlay">
-            <h4 className="activity-title">Youth</h4>
-            <p className="activity-subtitle">Program Kelas 1 SMP - 3 SMA</p>
+            <h4 className="activity-title">Core</h4>
+            <p className="activity-subtitle">Program Kelas 4 SD - 6 SD</p>
           </div>
         </div>
         
         <div className="activity-card">
           <div className="activity-image-wrapper">
-            <img src={imgJunior} className="activity-image" alt="Junior Program" style={{ objectPosition: 'center 15%' }} />
+            <img src={imgYouth} className="activity-image" alt="Orator Society Program" style={{ objectPosition: 'center 10%' }} />
           </div>
           <div className="activity-overlay">
-            <h4 className="activity-title">Junior</h4>
-            <p className="activity-subtitle">Program Kelas 4 SD - 6 SD</p>
+            <h4 className="activity-title">Orator Society</h4>
+            <p className="activity-subtitle">Program Kelas 1 SMP - 3 SMA</p>
           </div>
         </div>
       </aside>
