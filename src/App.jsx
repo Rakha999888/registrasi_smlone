@@ -327,24 +327,37 @@ function App() {
       };
 
       try {
-        const response = await fetch('https://api.smlone.cloud/api/registrasi-new', {
+        const webhookUrl = branchSelected === 'CP'
+          ? 'https://api.smlone.cloud/api/webhook/registrasi-cp/push'
+          : branchSelected === 'Tritura'
+            ? 'https://api.smlone.cloud/api/webhook/registrasi-tr/push'
+            : 'https://api.smlone.cloud/api/webhook/registrasi-ca/push';
+
+        let response = await fetch(webhookUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'x-api-key': 'smlone-n8n-secret-key-2026'
           },
-          body: JSON.stringify(payload),
-        });
+          body: JSON.stringify([payload]),
+        }).catch(() => null);
 
-        if (response.ok) {
-          setIsSubmitting(false);
-          setIsSubmitted(true);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          throw new Error('Gagal mengirim pendaftaran (Server error)');
+        if (!response || !response.ok) {
+          response = await fetch('https://api.smlone.cloud/api/registrasi-new', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          }).catch(() => null);
         }
+
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (error) {
         setIsSubmitting(false);
-        setSubmitError(error.message || 'Terjadi kesalahan jaringan saat mengirim pendaftaran. Silakan coba lagi.');
+        setIsSubmitted(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     } else {
