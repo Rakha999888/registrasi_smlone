@@ -327,13 +327,7 @@ function App() {
       };
 
       try {
-        const webhookUrl = branchSelected === 'CP'
-          ? 'https://api.smlone.cloud/api/webhook/registrasi-cp/push'
-          : branchSelected === 'Tritura'
-            ? 'https://api.smlone.cloud/api/webhook/registrasi-tr/push'
-            : 'https://api.smlone.cloud/api/webhook/registrasi-ca/push';
-
-        let response = await fetch(webhookUrl, {
+        let response = await fetch('https://api.smlone.cloud/api/webhook/registrasi-new/push', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
