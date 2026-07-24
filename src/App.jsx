@@ -327,7 +327,16 @@ function App() {
       };
 
       try {
-        let response = await fetch('https://api.smlone.cloud/api/webhook/registrasi-new/push', {
+        // Determine correct webhook per branch
+        let webhookUrl = 'https://api.smlone.cloud/api/webhook/registrasi-ca/push';
+        const b = (payload.branchSelected || '').toLowerCase();
+        if (b.includes('cp') || b.includes('cemara permai')) {
+          webhookUrl = 'https://api.smlone.cloud/api/webhook/registrasi-cp/push';
+        } else if (b.includes('tritura') || b.includes('tr')) {
+          webhookUrl = 'https://api.smlone.cloud/api/webhook/registrasi-tr/push';
+        }
+
+        await fetch(webhookUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -335,16 +344,6 @@ function App() {
           },
           body: JSON.stringify([payload]),
         }).catch(() => null);
-
-        if (!response || !response.ok) {
-          response = await fetch('https://api.smlone.cloud/api/registrasi-new', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-          }).catch(() => null);
-        }
 
         setIsSubmitting(false);
         setIsSubmitted(true);
