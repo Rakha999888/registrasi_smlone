@@ -327,20 +327,18 @@ function App() {
       };
 
       try {
-        // Determine correct webhook per branch
-        let webhookUrl = 'https://api.smlone.cloud/api/webhook/registrasi-ca/push';
+        let webhookUrl = 'https://api.smlone.cloud/api/registrasi-ca/push';
         const b = (payload.branchSelected || '').toLowerCase();
         if (b.includes('cp') || b.includes('cemara permai')) {
-          webhookUrl = 'https://api.smlone.cloud/api/webhook/registrasi-cp/push';
+          webhookUrl = 'https://api.smlone.cloud/api/registrasi-cp/push';
         } else if (b.includes('tritura') || b.includes('tr')) {
-          webhookUrl = 'https://api.smlone.cloud/api/webhook/registrasi-tr/push';
+          webhookUrl = 'https://api.smlone.cloud/api/registrasi-tr/push';
         }
 
         await fetch(webhookUrl, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': 'smlone-n8n-secret-key-2026'
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify([payload]),
         }).catch(() => null);
